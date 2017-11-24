@@ -1,12 +1,12 @@
 pipeline {
   agent any
   stages {
-    stage('Prepare Integration Enviroment') {
+    stage('Integration Environment') {
       steps {
         echo 'Integration Env'
       }
     }
-    stage('Deploy from Master Branch') {
+    stage('Deploy from Master Branches') {
       steps {
         echo 'Master'
       }
