@@ -7,8 +7,17 @@ pipeline {
       }
     }
     stage('Deploy from Master Branches') {
-      steps {
-        echo 'Master'
+      parallel {
+        stage('Deploy from Master Branches') {
+          steps {
+            echo 'Master'
+          }
+        }
+        stage('Artifacts download from Snapshot location') {
+          steps {
+            echo 'snapshot'
+          }
+        }
       }
     }
     stage('Deploy Single System Def.') {
@@ -16,27 +25,57 @@ pipeline {
         echo 'System Def'
       }
     }
-    stage('System Integration tests') {
+    stage('Run Integration tests') {
       steps {
         echo 'System Integration Tests'
       }
     }
     stage('Update Dashboards') {
-      steps {
-        parallel(
-          "Update Dashboards": {
+      parallel {
+        stage('Update Dashboards') {
+          steps {
             echo 'Dashboard'
-            
-          },
-          "Generate Reports": {
-            echo 'Report Generation'
-            
-          },
-          "Notify Errors": {
-            echo 'Error'
-            
           }
-        )
+        }
+        stage('Generate Reports') {
+          steps {
+            echo 'Report Generation'
+          }
+        }
+        stage('Notify Errors') {
+          steps {
+            echo 'Error'
+          }
+        }
+      }
+    }
+    stage('Release') {
+      parallel {
+        stage('Github Release tag') {
+          steps {
+            echo 'Release'
+          }
+        }
+        stage('Maven release prepare') {
+          steps {
+            echo 'Prepare'
+          }
+        }
+        stage('Maven release perform') {
+          steps {
+            echo 'Perform'
+          }
+        }
+      }
+    }
+    stage('Release stable branch') {
+      steps {
+        echo 'Stable'
+      }
+    }
+    stage('Maven Release deploy') {
+      steps {
+        echo 'Maven Central'
       }
     }
   }
