@@ -1,12 +1,12 @@
 pipeline {
   agent any
   stages {
-    stage('Integration Environment') {
+    stage('System Test Environment') {
       steps {
         echo 'Integration Env'
       }
     }
-    stage('Deploy from Master Branches') {
+    stage('Deploy from Master Branch') {
       parallel {
         stage('Deploy from Master Branches') {
           steps {
@@ -25,7 +25,7 @@ pipeline {
         echo 'System Def'
       }
     }
-    stage('Run Integration tests') {
+    stage('Run System Level Testing') {
       steps {
         echo 'System Integration Tests'
       }
